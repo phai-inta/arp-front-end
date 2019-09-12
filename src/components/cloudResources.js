@@ -18,21 +18,18 @@ const engineMarks = {
   20: "20"
 };
 const storageMarks = {
-  100: "100",
-  200: "200",
-  300: "300",
-  400: "400",
-  500: "500",
-  600: "600",
-  700: "700",
-  800: "800",
-  900: "900",
-  1000: "1000"
+  5: "5",
+  10: "10",
+  15: "15",
+  20: "20",
+  30: "30",
+  40: "40",
+  50: "50"
 };
 const computeEngineMin = 0;
 const computeEngineMax = 20;
-const storageMin = 0;
-const storageMax = 1000;
+const diskMin = 0;
+const diskMax = 1000;
 const operationMin = 0;
 const operationMax = 1000;
 
@@ -82,21 +79,21 @@ export default class CloudResources extends React.Component {
             <Col span={3}> Capacity</Col>
             <Col span={10}>
               <IntegerStep
-                min={storageMin}
-                max={storageMax}
+                min={diskMin}
+                max={diskMax}
                 marks={storageMarks}
                 selectedValue={this.onInputChange}
               />
             </Col>
-            <Col span={1}>
-              <Select defaultValue="gb" style={{ width: 120 }}>
+            <Col span={1}>time(s)</Col>
+              {/* <Select defaultValue="gb" style={{ width: 120 }}>
                 <Option value="gb">GB</Option>
                 <Option value="tb">TB</Option>
               </Select>
-            </Col>
+            </Col> */}
           </Row>
           <Row type="flex" justify="center" style={{ marginBottom: 40 }}>
-            <Col span={3}> Operation</Col>
+            <Col span={3}> Operation/Transaction</Col>
             <Col span={10}>
               <IntegerStep
                 min={operationMin}

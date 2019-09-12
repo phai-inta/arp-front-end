@@ -4,7 +4,7 @@ import {
     InputNumber,
     Row,
     Col
-  } from "antd";
+} from "antd";
 
 export default class IntegerStep extends React.Component {
   constructor(props){

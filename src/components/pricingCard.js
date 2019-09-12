@@ -24,6 +24,7 @@ export default class PricingCard extends React.Component {
     //   data.computeEngine.large * data.computeEngine.largePrice;
     // const operationPrice = data.storage.operation * data.storage.operationPrice;
     // const capacityPrice = data.storage.capacityPrice;
+    
     const total =
       smallEnginePrice
     return (
@@ -74,7 +75,7 @@ export default class PricingCard extends React.Component {
             <Title level={4}>Total</Title>
           </Col>
           <Col span={5}>
-            <Title level={4}>${total}</Title>
+            <Title level={4}>AUD{total}</Title>
           </Col>
         </Row>
       </Card>
