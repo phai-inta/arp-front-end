@@ -3,9 +3,12 @@ import CloudResources from "../components/cloudResources";
 import PricingReview from "../components/pricingReview";
 import Button from "antd/es/button";
 import {
+  Typography,
   Row,
   Col
 } from "antd";
+
+const { Title } = Typography;
 
 export default class CloudReview extends React.Component {
   state = {
@@ -30,8 +33,19 @@ export default class CloudReview extends React.Component {
 
   render() {
     return (
-      <div>
-        <CloudResources input={this.onInputChange} />
+      <div className="App">
+        <Title level={2}>Choose your cloud resources</Title>
+        <Row style={{ marginTop: 40 }}>
+          <Col span={12}>
+          <Title level={4}>Window</Title>
+          <CloudResources input={this.onInputChange} />
+          </Col>
+          <Col span={12}>
+          <Title level={4}>Linux</Title>
+          <CloudResources input={this.onInputChange} />
+          </Col>
+        </Row>
+        
         <PricingReview selectedValue={this.state.selectedValue} 
           platform={this.state.platform}
           smallPrice={this.state.smallPrice}
