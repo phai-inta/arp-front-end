@@ -1,0 +1,15 @@
+const express = require('express');
+const cors = require('cors');
+const getAzureData = require('./src/random');
+const app = express();
+
+app.use(cors());
+
+app.get('/', async (req, res) => {
+  const data = await getAzureData();
+  res.json(data);
+})
+
+app.listen(7000, () => {
+  console.log('Simple server running at port 7000');
+});
