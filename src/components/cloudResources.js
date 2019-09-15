@@ -1,11 +1,9 @@
 import * as React from 'react';
-import Button from 'antd/es/button';
 import IntegerStep from './integerStep';
-import { Typography, Select, Row, Col } from 'antd';
+import { Typography, Row, Col } from 'antd';
 import '../App.css';
 
 const { Title } = Typography;
-const { Option } = Select;
 const engineMarks = {
   5: '5',
   10: '10',

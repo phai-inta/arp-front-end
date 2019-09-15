@@ -1,28 +1,7 @@
 import * as React from 'react';
 import PricingCard from './pricingCard';
 import '../App.css';
-import { Typography, Card, Row, Col, Divider } from 'antd';
-
-const { Title } = Typography;
-
-// const pricingData = {
-//   platform: "Azure",
-//   computeEngine: {
-//     small: 3,
-//     medium: 2,
-//     large: 0,
-//     smallPrice: 150, // average price for one small instance
-//     mediumPrice: 200,
-//     largePrice: 250
-//   },
-//   storage: {
-//     capacity: 450,
-//     capacityUnit: "GB",
-//     capacityPrice: 60, //for 450gb
-//     operation: 1000,
-//     operationPrice: 0.02 // per operation
-//   }
-// };
+import { Typography, Row, Col } from 'antd';
 
 class PricingReview extends React.Component {
   render() {

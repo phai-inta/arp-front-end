@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import CloudReview from './page/cloudReview';
 
 export default class App extends Component {
