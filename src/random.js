@@ -79,23 +79,10 @@ async function getPricingForStorageAzure(exchangeRate) {
       response.data['offers']['transactions-ssd']['prices'][
         'australia-southeast'
       ]['value'] * exchangeRate;
-    const smallDiskPrice =
-      response.data['offers']['standardssd-e15']['prices'][
-        'australia-southeast'
-      ]['value'] * exchangeRate;
-    const mediumDiskPrice =
-      response.data['offers']['standardssd-e20']['prices'][
-        'australia-southeast'
-      ]['value'] * exchangeRate;
-    const largeDiskPrice =
-      response.data['offers']['standardssd-e30']['prices'][
-        'australia-southeast'
-      ]['value'] * exchangeRate;
+    const smallDiskPrice = (response.data['offers']['standardssd-e30']['prices']['australia-southeast']['value'] / 1024) * exchangeRate;
     const storagePrice = {
       operationPrices: operationPrices,
       smallDiskPrice: smallDiskPrice,
-      mediumDiskPrice: mediumDiskPrice,
-      largeDiskPrice: largeDiskPrice
     };
     return storagePrice;
   } catch (error) {

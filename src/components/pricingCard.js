@@ -66,16 +66,16 @@ export default class PricingCard extends React.Component {
                 </Col>
               </Row>
               <Row type="flex" justify="center">
-                <Col span={6}>Capacity</Col>
-                <Col span={6}>{selectedValue.disk}</Col>
-                <Col span={4}>GB</Col>
-                <Col span={3}>${price.disk.toLocaleString()}</Col>
+                <Col span={5}>Capacity</Col>
+                <Col span={3}>{selectedValue.disk}</Col>
+                <Col span={6}>GB</Col>
+                <Col span={4}>${price.disk.toLocaleString()}</Col>
               </Row>
               <Row type="flex" justify="center">
-                <Col span={6}>Operations</Col>
-                <Col span={6}>{selectedValue.operation}</Col>
-                <Col span={4}>times</Col>
-                <Col span={3}>${price.operation.toLocaleString()}</Col>
+                <Col span={5}>Operations</Col>
+                <Col span={3}>{selectedValue.operation}</Col>
+                <Col span={6}>times</Col>
+                <Col span={4}>${price.operation.toLocaleString()}</Col>
               </Row>
             </Card>
           );
