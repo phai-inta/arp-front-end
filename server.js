@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const getAzureData = require("./src/random");
+const getAzureData = require("./src/azure");
 const getAWSData = require("./src/aws");
 const app = express();
 
