@@ -23,35 +23,90 @@ async function getPricingForComputeEngineAWS(exchangeRate) {
       "https://calculator.aws/pricing/1.0/ec2/region/ap-southeast-2/reserved-instance/windows/index.json"
     );
     const prices = response.data.prices;
-    const smallWindowsMonthly =
-      prices[877].calculatedPrice.onDemandRate.USD *
-      HOURS_PER_MONTH *
-      exchangeRate;
-    const mediumWindowsMonthly =
-      prices[401].calculatedPrice.onDemandRate.USD *
-      HOURS_PER_MONTH *
-      exchangeRate;
-    const largeWindowsMonthly =
-      prices[895].calculatedPrice.onDemandRate.USD *
-      HOURS_PER_MONTH *
-      exchangeRate;
+    for (var i = 0; i < prices.length; i++) {
+      if (
+        prices[i].attributes["aws:ec2:instanceType"] === SMALL_INSTANCE &&
+        prices[i].attributes["aws:offerTermLeaseLength"] === "1yr" &&
+        prices[i].attributes["aws:offerTermOfferingClass"] === "standard" &&
+        prices[i].attributes["aws:offerTermPurchaseOption"] === "No Upfront"
+      ) {
+        var smallWindowsMonthly =
+          prices[i].calculatedPrice.onDemandRate.USD *
+          HOURS_PER_MONTH *
+          exchangeRate;
+      }
+      if (
+        prices[i].attributes["aws:ec2:instanceType"] === MEDIUM_INSTANCE &&
+        prices[i].attributes["aws:offerTermLeaseLength"] === "1yr" &&
+        prices[i].attributes["aws:offerTermOfferingClass"] === "standard" &&
+        prices[i].attributes["aws:offerTermPurchaseOption"] === "No Upfront"
+      ) {
+        var mediumWindowsMonthly =
+          prices[i].calculatedPrice.onDemandRate.USD *
+          HOURS_PER_MONTH *
+          exchangeRate;
+      }
+      if (
+        prices[i].attributes["aws:ec2:instanceType"] === LARGE_INSTANCE &&
+        prices[i].attributes["aws:offerTermLeaseLength"] === "1yr" &&
+        prices[i].attributes["aws:offerTermOfferingClass"] === "standard" &&
+        prices[i].attributes["aws:offerTermPurchaseOption"] === "No Upfront"
+      ) {
+        var largeWindowsMonthly =
+          prices[i].calculatedPrice.onDemandRate.USD *
+          HOURS_PER_MONTH *
+          exchangeRate;
+      }
+    }
+
     const responseLinux = await axios.get(
       "https://calculator.aws/pricing/1.0/ec2/region/ap-southeast-2/reserved-instance/linux/index.json"
     );
     const linuxPrices = responseLinux.data.prices;
-    const smallLinuxMonthly =
-      linuxPrices[1111].calculatedPrice.onDemandRate.USD *
-      HOURS_PER_MONTH *
-      exchangeRate;
-    const mediumLinuxMonthly =
-      linuxPrices[1499].calculatedPrice.onDemandRate.USD *
-      HOURS_PER_MONTH *
-      exchangeRate;
-    const largeLinuxMonthly =
-      linuxPrices[550].calculatedPrice.onDemandRate.USD *
-      HOURS_PER_MONTH *
-      exchangeRate;
+    for (var i = 0; i < linuxPrices.length; i++) {
+      if (
+        linuxPrices[i].attributes["aws:ec2:instanceType"] === SMALL_INSTANCE &&
+        linuxPrices[i].attributes["aws:offerTermLeaseLength"] === "1yr" &&
+        linuxPrices[i].attributes["aws:offerTermOfferingClass"] ===
+          "standard" &&
+        linuxPrices[i].attributes["aws:offerTermPurchaseOption"] ===
+          "No Upfront"
+      ) {
+        var smallLinuxMonthly =
+          linuxPrices[i].calculatedPrice.onDemandRate.USD *
+          HOURS_PER_MONTH *
+          exchangeRate;
+      }
+      if (
+        linuxPrices[i].attributes["aws:ec2:instanceType"] === MEDIUM_INSTANCE &&
+        linuxPrices[i].attributes["aws:offerTermLeaseLength"] === "1yr" &&
+        linuxPrices[i].attributes["aws:offerTermOfferingClass"] ===
+          "standard" &&
+        linuxPrices[i].attributes["aws:offerTermPurchaseOption"] ===
+          "No Upfront"
+      ) {
+        var mediumLinuxMonthly =
+          linuxPrices[i].calculatedPrice.onDemandRate.USD *
+          HOURS_PER_MONTH *
+          exchangeRate;
+      }
+      if (
+        linuxPrices[i].attributes["aws:ec2:instanceType"] === LARGE_INSTANCE &&
+        linuxPrices[i].attributes["aws:offerTermLeaseLength"] === "1yr" &&
+        linuxPrices[i].attributes["aws:offerTermOfferingClass"] ===
+          "standard" &&
+        linuxPrices[i].attributes["aws:offerTermPurchaseOption"] ===
+          "No Upfront"
+      ) {
+        var largeLinuxMonthly =
+          linuxPrices[i].calculatedPrice.onDemandRate.USD *
+          HOURS_PER_MONTH *
+          exchangeRate;
+      }
+    }
+
     const computeEnginePrices = {
+      platform: "aws",
       windows: {
         small: smallWindowsMonthly,
         medium: mediumWindowsMonthly,
@@ -64,19 +119,6 @@ async function getPricingForComputeEngineAWS(exchangeRate) {
       }
     };
     return computeEnginePrices;
-    // // This is how I search for the index of the compute instance.
-    // for (var i = 0; i < linuxPrices.length; i++) {
-    //   if (
-    //     linuxPrices[i].attributes["aws:ec2:instanceType"] === LARGE_INSTANCE &&
-    //     linuxPrices[i].attributes["aws:offerTermLeaseLength"] === "1yr" &&
-    //     linuxPrices[i].attributes["aws:offerTermOfferingClass"] ===
-    //       "standard" &&
-    //     linuxPrices[i].attributes["aws:offerTermPurchaseOption"] ===
-    //       "No Upfront"
-    //   ) {
-    //     console.log(i);
-    //   }
-    // }
   } catch (error) {
     console.log(
       "Something has gone wrong while retrieving prices for compute engines aws " +
@@ -115,3 +157,5 @@ getAWSData().then(response => {
   awsData = response;
   console.log(awsData);
 });
+
+module.exports = getAWSData;

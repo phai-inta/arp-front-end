@@ -49,7 +49,8 @@ async function getPricingForComputeEngineAzure(exchangeRate) {
       largeLinux["prices"]["perhour"]["australia-southeast"]["value"] *
       exchangeRate *
       HOURS_PER_MONTH;
-    const computeEnginePrices = {
+    const azurePrices = {
+      platform: "azure",
       windows: {
         small: smallWindowsMonthly,
         medium: mediumWindowsMonthly,
@@ -61,7 +62,7 @@ async function getPricingForComputeEngineAzure(exchangeRate) {
         large: largeLinuxMonthly
       }
     };
-    return computeEnginePrices;
+    return azurePrices;
   } catch (error) {
     console.log(
       "Something has gone wrong while retrieving compute engine pricing for Azure"
@@ -78,7 +79,7 @@ async function getPricingForStorageAzure(exchangeRate) {
       response.data["offers"]["transactions-ssd"]["prices"][
         "australia-southeast"
       ]["value"] * exchangeRate;
-    const pricePerGb =
+    const smallDiskPrice =
       (response.data["offers"]["standardssd-e30"]["prices"][
         "australia-southeast"
       ]["value"] /
@@ -86,7 +87,7 @@ async function getPricingForStorageAzure(exchangeRate) {
       exchangeRate;
     const storagePrice = {
       operationPrices: operationPrices,
-      pricePerGb: pricePerGb
+      smallDiskPrice: smallDiskPrice
     };
     return storagePrice;
   } catch (error) {
@@ -99,12 +100,10 @@ async function getPricingForStorageAzure(exchangeRate) {
 
 async function getAzureData() {
   const exchangeRate = await getExchangeRate();
-  const computeEnginePrices = await getPricingForComputeEngineAzure(
-    exchangeRate
-  );
+  const azurePrices = await getPricingForComputeEngineAzure(exchangeRate);
   const storagePrices = await getPricingForStorageAzure(exchangeRate);
   const azureData = {};
-  azureData["computeEngine"] = computeEnginePrices;
+  azureData["computeEngine"] = azurePrices;
   azureData["storage"] = storagePrices;
   return azureData;
 }
@@ -114,3 +113,5 @@ getAzureData().then(response => {
   azureData = response;
   console.log(azureData);
 });
+
+module.exports = getAzureData;
