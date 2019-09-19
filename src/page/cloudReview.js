@@ -1,21 +1,54 @@
-import React from 'react';
-import CloudResources from '../components/cloudResources';
-import PricingReview from '../components/pricingReview';
-import Button from 'antd/es/button';
-import { Typography, Row, Col } from 'antd';
-import axios from 'axios';
+import React from "react";
+import CloudResources from "../components/cloudResources";
+import PricingReview from "../components/pricingReview";
+import Button from "antd/es/button";
+import { Typography, Row, Col } from "antd";
+import axios from "axios";
 
 const { Title } = Typography;
 
 const round = (value, decimals = 2) => {
-  return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
-}
+  return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
+};
 
 export default class CloudReview extends React.Component {
   state = {
     isLoading: true,
     pricingData: {
-      platform: 'Azure',
+      windows: {
+        selectedValue: {
+          small: 0,
+          medium: 0,
+          large: 0,
+          disk: 0,
+          operation: 0
+        },
+        price: {
+          small: 0,
+          medium: 0,
+          large: 0,
+          disk: 0,
+          operation: 0
+        }
+      },
+      linux: {
+        selectedValue: {
+          small: 0,
+          medium: 0,
+          large: 0,
+          disk: 0,
+          operation: 0
+        },
+        price: {
+          small: 0,
+          medium: 0,
+          large: 0,
+          disk: 0,
+          operation: 0
+        }
+      }
+    },
+    awsPricingData: {
       windows: {
         selectedValue: {
           small: 0,
@@ -52,18 +85,20 @@ export default class CloudReview extends React.Component {
   };
 
   async componentDidMount() {
-    const response = await axios.get('http://localhost:7000');
+    const response = await axios.get("http://localhost:7000/azure");
+    const awsResponse = await axios.get("http://localhost:7000/aws");
     this.setState({
       azureCalculateData: response.data,
-      awsCalculateData: response.data,
+      awsCalculateData: awsResponse.data,
       isLoading: false
     });
-    console.log(response.data)
+    console.log(awsResponse.data);
+    console.log(response.data);
   }
 
   onStorageSelected = ({ type, value, os }) => {
     const storagePrice =
-      type === 'disk'
+      type === "disk"
         ? this.state.azureCalculateData.storage.smallDiskPrice
         : this.state.azureCalculateData.storage.operationPrices;
 
@@ -73,15 +108,28 @@ export default class CloudReview extends React.Component {
     newPrice[type] = round(priceValue, 2);
     newSelected[type] = value;
 
+    const awsStoragePrice =
+      type === "disk" ? this.state.awsCalculateData.storage.pricePerGb : 0;
+    const awsPriceValue = awsStoragePrice * value;
+    let awsNewPrice = { ...this.state.awsPricingData[os].price };
+    let awsNewSelected = { ...this.state.awsPricingData[os].selectedValue };
+    awsNewPrice[type] = round(awsPriceValue, 2);
+    awsNewSelected[type] = value;
+
     this.setState(prev => {
       let pricingData = JSON.parse(JSON.stringify(prev.pricingData));
+      let awsPricingData = JSON.parse(JSON.stringify(prev.awsPricingData));
       const result = {
         selectedValue: newSelected,
         price: newPrice
       };
-
+      const awsResult = {
+        selectedValue: awsNewSelected,
+        price: awsNewPrice
+      };
       pricingData[os] = result;
-      return { pricingData };
+      awsPricingData[os] = awsResult;
+      return { pricingData, awsPricingData };
     });
   };
 
@@ -93,20 +141,31 @@ export default class CloudReview extends React.Component {
     newPrice[size] = round(priceValue, 2);
     newSelected[size] = value;
 
+    const awsPriceValue =
+      this.state.awsCalculateData.computeEngine[os][size] * value;
+    let awsNewPrice = { ...this.state.awsPricingData[os].price };
+    let awsNewSelected = { ...this.state.awsPricingData[os].selectedValue };
+    awsNewPrice[size] = round(awsPriceValue, 2);
+    awsNewSelected[size] = value;
     this.setState(prev => {
       let pricingData = JSON.parse(JSON.stringify(prev.pricingData));
+      let awsPricingData = JSON.parse(JSON.stringify(prev.awsPricingData));
       const result = {
         selectedValue: newSelected,
         price: newPrice
       };
-
+      const awsResult = {
+        selectedValue: awsNewSelected,
+        price: awsNewPrice
+      };
       pricingData[os] = result;
-      return { pricingData };
+      awsPricingData[os] = awsResult;
+      return { pricingData, awsPricingData };
     });
   };
 
   handleClick = () => {
-    console.log('backbtn is clicked');
+    console.log("backbtn is clicked");
   };
 
   render() {
@@ -139,8 +198,8 @@ export default class CloudReview extends React.Component {
 
         <PricingReview
           selectedValue={this.state.selectedValue}
-          platform={this.state.platform}
           data={this.state.pricingData}
+          awsData={this.state.awsPricingData}
         />
 
         <Row

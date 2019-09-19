@@ -1,13 +1,13 @@
-import * as React from 'react';
-import '../App.css';
-import { Typography, Card, Row, Col } from 'antd';
+import * as React from "react";
+import "../App.css";
+import { Typography, Card, Row, Col } from "antd";
 
 const { Title } = Typography;
 
 export default class PricingCard extends React.Component {
   render() {
     const pricingData = this.props.data;
-    const platform = pricingData.platform;
+    const platform = this.props.platform;
     const { windows, linux } = pricingData;
 
     const cards = {
@@ -16,8 +16,8 @@ export default class PricingCard extends React.Component {
     };
 
     const round = (value, decimals = 2) => {
-      return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
-    }
+      return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
+    };
 
     let total = 0;
 
